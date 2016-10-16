@@ -89,7 +89,7 @@ function register(req,res)
 	var tel = req.param("tel");
 	
 	var post  = {first_nm: firstName, last_nm : lastName, email_id: email, pass: password, tel:tel };
-	var insertUser="insert into datahub.customer set ? ";
+	var insertUser="insert into customer set first_nm =? , last_nm =? , email_id = ?, pass = ?, tel = ?, last_login_ts = CURRENT_TIMESTAMP";
 	mysql.insertqueryWithParams(function(err,results){
 		if(err){
 			if(err.code == "ER_DUP_ENTRY"){
@@ -103,20 +103,13 @@ function register(req,res)
 		}
 		else
 		{
-			res.render('index', { title: 'EBay', username:firstName },function(err, result) {
-				if (!err) {
-					req.session.user_id = results.insertId;
-					res.end(result);
-					}
-					else {
-					res.end('An error occurred');
-					console.log(err);
-					}
-					});
+			req.session.last_ts = "";
+			req.session.user_id = results.insertId;
+			req.session.first_nm = firstName ;
 			json_responses = {"statusCode" : 200};
 			res.send(json_responses);
 		}
-		},insertUser, post);
+	},insertUser, [firstName, lastName, email, password, tel ]);
 }
 
 
@@ -142,7 +135,8 @@ else if(results.length>0)
 	req.session.user_id = results[0].cust_id;
 	req.session.first_nm = results[0].first_nm;
 	req.session.last_ts = results[0].date;
-	var queryString = 'Update datahub.customer set last_login_ts = CURDATE() WHERE cust_id = ' + req.session.user_id +'';
+	console.log(req.session.last_ts);
+	var queryString = 'Update datahub.customer set last_login_ts = CURRENT_TIMESTAMP WHERE cust_id = ' + req.session.user_id +'';
 	mysql.updateData(queryString, "");
 	logger.event("user logged in", { user_id: req.session.user_id});
 	json_responses = {"statusCode" : 200};
