@@ -64,7 +64,7 @@ trans.controller('transaction', function($scope, $http) {
 					else
 						{
 						alert("product added to cart");
-						window.location.assign("/loggedIn");
+						window.location.assign("/cart");
 						}
 				}).error(function(error) {
 				});
@@ -95,7 +95,7 @@ trans.controller('transaction', function($scope, $http) {
 			else
 				{
 				alert("bid submitted");
-				window.location.assign("/productDetails?prod_id="+data.post.product_id);
+				window.location.assign("/loggedIn");
 				}
 		}).error(function(error) {
 		});

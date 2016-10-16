@@ -55,7 +55,7 @@ function getConnection(){
 
 function insertqueryWithParams(callback, sqlQuery, post){
 	
-	console.log("\nSQL Query::"+post);
+	console.log("\nSQL Query::"+sqlQuery+ ": " +post);
 	var connection=fetchConnection();
 	var query = connection.query(sqlQuery, post, function(err,rows, result) {
 	if(err){
@@ -73,7 +73,6 @@ function insertqueryWithParams(callback, sqlQuery, post){
 
 function insertqueryWithParamsReturnData(callback, sqlQuery, post){
 	
-	console.log("\nSQL Query::"+sqlQuery);
 	var connection=fetchConnection();
 	var query = connection.query(sqlQuery, post, function(err,rows, result) {
 	if(err){
@@ -84,14 +83,12 @@ function insertqueryWithParamsReturnData(callback, sqlQuery, post){
 	callback(err, rows, post);
 	}
 	});
-	console.log("\nConnection closed..");
 	returnToPool(connection);
 }
 
 	
 //fetching the data from the sql server
 function fetchData(callback,sqlQuery,key){
-	console.log("\nSQL Query::"+sqlQuery+key);
 	var connection=fetchConnection();
 	connection.query(sqlQuery, [key], function(err, rows, fields) {
 	if(err){
@@ -99,16 +96,13 @@ function fetchData(callback,sqlQuery,key){
 	}
 	else
 	{ // return err or result
-	console.log("DB Results:"+rows);
 	callback(err, rows);
 	}
 	});
-	console.log("\nConnection closed..");
 	returnToPool(connection);
 	}
 
 function deleteData(callback,sqlQuery,key){
-	console.log("\nSQL Query::"+sqlQuery+key);
 	var connection=fetchConnection();
 	connection.query(sqlQuery, [key], function(err, rows, fields) {
 	if(err){
@@ -116,16 +110,13 @@ function deleteData(callback,sqlQuery,key){
 	}
 	else
 	{ // return err or result
-	console.log("DB Results:"+rows);
 	callback(err, rows);
 	}
 	});
-	console.log("\nConnection closed..");
 	returnToPool(connection);
 	}
 
 function updateData(callback,sqlQuery,key){
-	console.log("\nSQL Query::"+sqlQuery+key);
 	var connection=fetchConnection();
 	connection.query(sqlQuery, [key], function(err, rows, fields) {
 	if(err){
@@ -133,16 +124,13 @@ function updateData(callback,sqlQuery,key){
 	}
 	else
 	{ // return err or result
-	console.log("DB Results:"+rows);
 	callback(err, rows);
 	}
 	});
-	console.log("\nConnection closed..");
 	returnToPool(connection);
 	}
 
 function updateData(sqlQuery,key){
-	console.log("\nSQL Query::"+sqlQuery+key);
 	var connection=fetchConnection();
 	connection.query(sqlQuery, [key], function(err, rows, fields) {
 	if(err){
@@ -150,10 +138,8 @@ function updateData(sqlQuery,key){
 	}
 	else
 	{ // return err or result
-	console.log("DB Results:"+rows);
 	}
 	});
-	console.log("\nConnection closed..");
 	returnToPool(connection);
 	}
 

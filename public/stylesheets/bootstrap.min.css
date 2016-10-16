@@ -895,6 +895,13 @@ img {
   max-height: 130px;
 }
 
+.cartImage{
+	width:220px;
+	max-width:120px;
+	height: 130px;
+  max-height: 100px;
+}
+
 .img-rounded {
 	border-radius:6px
 }

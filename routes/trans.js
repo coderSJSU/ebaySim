@@ -80,7 +80,7 @@ function getCart(req, res){
 	
 	var cust_id = req.session.user_id;
 	var json_responses;
-	var queryString = 'select p.prod_id , p.label, p.description,(select c.desc from conditions c where c.conditionId = p.condition)  conditions, ' + 
+	var queryString = 'select p.prod_id , p.label,p.brand as brand_id, p.description,(select c.desc from conditions c where c.conditionId = p.condition)  conditions, ' + 
 	'(select b.label from brand b where b.brand_id = p.brand)  brand, c.quantity, '+ 
   ' (case when p.ship_price is null then 0 else  p.ship_price end ) ship_price , (case when p.price is null then 0 else  p.price end ) price  '+
   ' from product p, cart c where p.prod_id = c.product_id and c.user_id =' + cust_id+ '';
