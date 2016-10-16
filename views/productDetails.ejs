@@ -8,7 +8,7 @@
     <meta name="author" content="jpranjal">
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 	<link rel='stylesheet' href='/stylesheets/style.css' />
-	<script	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+	<script	src="/js/angular.min.js"></script>
     <!-- Custom CSS -->
     <link href="/stylesheets/business-casual.css" rel="stylesheet">
 	<script src="/angularjs/transaction.js"></script>
@@ -32,17 +32,18 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-9">
-					<h1><%= item.brand %> <%= item.label %></h1>
-				</div>
-			</div>	
-			<div class="row">
-				<div class="col-sm-9">
-					<label><%= item.desc%></label>
+				<label> <font style="font-weight: bold; font-size:x-large;"><%= item.brand %> <%= item.label %></font></label>
 				</div>
 			</div>
+			<br><br>
 			<div class="row">
 				<div class="col-sm-9">
-				<label> Item condition: <%=item.conditions %></label>
+				<label> <font style="font-weight:normal ; font-size:large;"><b>Description:</b> <%= item.description%></font></label>
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-9">
+				<label> <font style="font-weight:normal ; font-size:medium;"><b>Item condition:</b> <%= item.conditions%></font></label>
 				</div>
 			</div><br><br>
 			<div class="row">
@@ -84,7 +85,7 @@
 				<label><font style="font-weight: bold;">Current bid:&nbsp;</font> Max(<%= item.max%>) &nbsp;&nbsp;[<%= item.count%> bids]</label>
 								<%} %>
 				</div>
-			</div><br><br>
+			</div>
 			<div class="row">
 				<div class="col-sm-5">
 					<div class="row">
