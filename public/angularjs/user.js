@@ -56,7 +56,8 @@ user.controller('user', function($scope, $http) {
 		var lastName = $scope.lastName;
 		var password = $scope.password;
 		
-		if(($scope.email == undefined || $scope.password == undefined || $scope.reemail == undefined || $scope.firstName == undefined || $scope.tel == undefined)){
+		if(($scope.email == "" || $scope.password == "" || $scope.reemail == "" || $scope.firstName == "" || $scope.tel == "" ||
+				$scope.email == undefined || $scope.password == undefined || $scope.reemail == undefined || $scope.firstName == undefined || $scope.tel == undefined)){
 			alert("Enter Mandatory details");
 		}
 		else if(!($scope.email == $scope.reemail)){

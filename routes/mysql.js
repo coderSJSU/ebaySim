@@ -12,20 +12,16 @@ function createPool(size){
 		}
 	}
 	maxPoolSize = size;
-	console.log("pool is created");
 }
 
 createPool(50);
 
 function fetchConnection(){
 	if(pool.length>0){
-		console.log("connection fetched from pool");
 		var connection = pool.pop();
-		console.log("connection left: "+pool.length);
 		return connection;	
 	}
 	else{
-		console.log("pool is full, no connection left");
 		return null;
 	}
 }
@@ -33,7 +29,6 @@ function fetchConnection(){
 function returnToPool(obj){
 	if(pool.length <=maxPoolSize){
 		pool.push(obj);
-		console.log("Now pool size is "+ pool.length );
 	}
 	else
 		obj = "";
@@ -55,7 +50,6 @@ function getConnection(){
 
 function insertqueryWithParams(callback, sqlQuery, post){
 	
-	console.log("\nSQL Query::"+sqlQuery+ ": " +post);
 	var connection=fetchConnection();
 	var query = connection.query(sqlQuery, post, function(err,rows, result) {
 	if(err){
@@ -67,7 +61,6 @@ function insertqueryWithParams(callback, sqlQuery, post){
 	callback(err, rows);
 	}
 	});
-	console.log("\nConnection closed..");
 	returnToPool(connection);
 }
 

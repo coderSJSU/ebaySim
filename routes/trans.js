@@ -54,8 +54,6 @@ function addToCart(req, res){
 	
 	var json_responses;
 	var post  = {product_id:finalData.id, user_id: user_id, quantity: finalData.quantity};
-	console.log(finalData.id);
-	//var addBid="insert into bid set ? ";
 	var addBid="insert into cart set ? ";
 	var json_responses;
 	if(user_id == undefined){
@@ -85,7 +83,6 @@ function getCart(req, res){
   ' (case when p.ship_price is null then 0 else  p.ship_price end ) ship_price , (case when p.price is null then 0 else  p.price end ) price  '+
   ' from product p, cart c where p.prod_id = c.product_id and c.user_id =' + cust_id+ '';
 	
-	console.log("Query is:"+queryString);
 	if(cust_id == undefined){
 		json_responses = {"statusCode" : 405};
 		res.send(json_responses);
@@ -116,7 +113,6 @@ function getCartAmount(req, res){
   ' (case when p.ship_price is null then 0 else  p.ship_price end ) ship_price , (case when p.price is null then 0 else  p.price end ) price  '+
   ' from product p, cart c where p.prod_id = c.product_id and c.user_id =' + cust_id+ '';
 	
-	console.log("Query is:"+queryString);
 	if(cust_id == undefined){
 		json_responses = {"statusCode" : 405};
 		res.send(json_responses);
@@ -230,7 +226,6 @@ exports.getProductQuanity = function(req, res){
 	var queryString = 'select quantity ' +
   ' from product where prod_id =' + finalData.prod_id+ '';
 	
-	console.log("Query is:"+queryString);
 	mysql.fetchData(function(err,results){
 		if(err){
 			json_responses = {"statusCode" : 401};
@@ -252,7 +247,6 @@ function getAmount(req, res){
 	is_urgent = req.session.is_urgent;
 	//delete req.session['prod_id'];
 	delete req.session['is_urgent'];
-	console.log("prod:"+prod_id +"--urgent:"+is_urgent);
 	
 	var cust_id = req.session.user_id;
 	var json_responses;
@@ -260,7 +254,6 @@ function getAmount(req, res){
 	var queryString = 'select max(bid_amount) as max'+ 
 	  ' from bid where product_id =' + prod_id+ '';
 		
-		console.log("Query is:"+queryString);
 		if(cust_id == undefined){
 			json_responses = {"statusCode" : 405};
 			res.send(json_responses);
@@ -273,7 +266,6 @@ function getAmount(req, res){
 			}
 			else 
 			{
-				console.log("bid amount: " + results);
 				json_responses = {"statusCode" : 200, "bid": results};
 				res.send(json_responses);
 			}
@@ -288,7 +280,6 @@ function sold(req, res){
 	var user_id = req.session.user_id;
 	prod_id = req.session.prod_id;
 	delete req.session['prod_id'];
-	console.log("prod:"+prod_id +"--urgent:"+is_urgent);
 	
 	var cust_id = req.session.user_id;
 	var json_responses;

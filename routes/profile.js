@@ -20,11 +20,10 @@ function getItemsForSale(req, res){
 	
 	var cust_id = req.session.user_id;
 	var json_responses;
-	var queryString = 'select p.prod_id , p.label, p.description, ' + 
+	var queryString = 'select p.prod_id , p.label, p.description, p.brand as brand_id,  ' + 
 	'(select b.label from brand b where b.brand_id = p.brand)  brand, p.quantity '+ 
   ' from product p where p.seller_id =' + cust_id+ '';
 	
-	console.log("Query is:"+queryString);
 	if(cust_id == undefined){
 		json_responses = {"statusCode" : 405};
 		res.send(json_responses);
@@ -52,11 +51,10 @@ function getItemsBought(req, res){
 	var cust_id = req.session.user_id;
 	var json_responses;
 	
-	var queryString = 'select s.product_id , p.label,  ' +
+	var queryString = 'select s.product_id , p.label, p.brand as brand_id,  ' +
 		' (select b.label from datahub.brand b where b.brand_id = p.brand)  brand, s.quantity ' + 
 		' from datahub.product p, datahub.sales s where s.product_id = p.prod_id and s.customer_id =' + cust_id+ '';	
 	
-	console.log("Query is:"+queryString);
 	if(cust_id == undefined){
 		json_responses = {"statusCode" : 405};
 		res.send(json_responses);
@@ -86,7 +84,6 @@ function getUserInfo(req, res){
 	var queryString = 'SELECT c.first_nm, c.last_nm, c.email_id, c.month, c.day, c.year, ca.address, ca.city, ca.country ' +
 		' FROM customer c left join customer_add ca on ca.customer_id = c.cust_id where c.cust_id =' + cust_id+ '';	
 	
-	console.log("Query is:"+queryString);
 	if(cust_id == undefined){
 		json_responses = {"statusCode" : 405};
 		res.send(json_responses);
@@ -126,7 +123,6 @@ function saveProfile(req,res)
 	
 	var updateCust='update customer set month = ? , year = ? ' +
 		', day = ? where cust_id = '+cust_id;
-	console.log(updateCust);
 		mysql.insertqueryWithParams(function(err,results){
 		if(err){
 			cust_updated = 0;
@@ -138,7 +134,6 @@ function saveProfile(req,res)
 		},updateCust, [month, year, day]);
 		
 		var updateCustAdd='update customer_add set address = ? , city = ? , country = ?  where customer_id = '+cust_id;
-		console.log(updateCustAdd);
 		mysql.insertqueryWithParams(function(err,results){
 		if(err){
 			add_updated = 0;

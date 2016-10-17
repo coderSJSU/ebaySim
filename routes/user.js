@@ -115,14 +115,12 @@ function register(req,res)
 
 
 function checkUser(req, res){
-	
 	var email_id = req.param("email");
 	var password = req.param("password");
 	
 	password = encrypt(password);
 	
 	var json_responses;
-	console.log("e : " +password);
 	var queryString = 'SELECT cust_id, first_nm, DATE_FORMAT(last_login_ts,\'%b %d %Y %h:%i %p\') as date  FROM datahub.customer WHERE email_id = ? and pass = ? ';
 
 	mysql.insertqueryWithParams(function(err,results){
@@ -135,7 +133,6 @@ else if(results.length>0)
 	req.session.user_id = results[0].cust_id;
 	req.session.first_nm = results[0].first_nm;
 	req.session.last_ts = results[0].date;
-	console.log(req.session.last_ts);
 	var queryString = 'Update datahub.customer set last_login_ts = CURRENT_TIMESTAMP WHERE cust_id = ' + req.session.user_id +'';
 	mysql.updateData(queryString, "");
 	logger.event("user logged in", { user_id: req.session.user_id});
@@ -153,7 +150,6 @@ else if(results.length == 0)
 }
 
 function fetchData(callback,sqlQuery,key){
-	console.log("\nSQL Query::"+sqlQuery+key);
 	var connection=mysql.getConnection();
 	connection.query(sqlQuery, [key], function(err, rows, fields) {
 	if(err){
@@ -161,7 +157,6 @@ function fetchData(callback,sqlQuery,key){
 	}
 	else
 	{ // return err or result
-	console.log("DB Results:"+rows);
 	callback(err, rows);
 	}
 	});
@@ -172,7 +167,6 @@ function fetchData(callback,sqlQuery,key){
 function encrypt(text){
 	var algorithm = 'aes-256-ctr';
 	var password = 'd6F3Efeq';
-	console.log("d : " +text);
 	
 	var cipher = crypto.createCipher(algorithm,password)
 	  var crypted = cipher.update(text,'utf8','hex')

@@ -14,9 +14,24 @@ var express = require('express')
   , trans = require('./routes/trans')
   , profile = require('./routes/profile');
 
+var Mocha = require("mocha");
 var app = express();
 var clientSession = require("client-sessions");
 
+
+var mocha = new Mocha({
+    ui: "tdd",
+    reporter: "spec"
+});
+
+mocha.addFile("./public/tests/test.js");
+
+//Run the tests.
+/*mocha.run(function(failures){
+  process.on('exit', function () {
+    process.exit(failures);  // exit with non-zero status if there were failures
+  });
+});*/
 
 app.use(clientSession({
 	cookieName: 'session',

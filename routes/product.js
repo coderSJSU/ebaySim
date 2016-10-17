@@ -20,7 +20,6 @@ function productDetails(req, res){
 	
 	var prod_id = req.query.prod_id;
 	var customer_id = req.session.user_id;
-	//console.log("cust_id " +customer_id);
 	var post  = [customer_id, prod_id];
 	var json_responses;
 	
@@ -52,7 +51,6 @@ function productDetails(req, res){
  ' then 1 else 0 end) as max_bidder ' +
  ' from datahub.product p where p.prod_id = ? ' ;
 	
-	console.log("Query is:"+queryString);
 	mysql.insertqueryWithParams(function(err,results){
 if(err){
 	json_responses = {"statusCode" : 401};
@@ -60,7 +58,6 @@ if(err){
 }
 else if(results.length>0)
 {
-	console.log("desc"+results[0].label);
 	logger.event("product checked", { user_id: customer_id, product:prod_id, description:results[0].description, brand: results[0].brand, label: results[0].label });
 	ejs.renderFile('./views/productDetails.ejs', {  username:req.session.first_nm, data:results },function(err, result) {
 		if (!err) {
@@ -89,11 +86,11 @@ else if(results.length == 0)
 function showProducts(req, res){
 	
 	var cust_id = req.session.user_id;
+	
 	var cat_id = req.query.cat;
 	var json_responses;
 	var queryString = 'select prod_id, is_auction, is_fixed, quantity,brand as brand_id, DATEDIFF(CURDATE(), p.add_ts) as days, (select b.label from brand b where b.brand_id = p.brand)  brand, label, description, price, (select c.desc from conditions c where c.conditionId = p.condition)  conditions from product p where p.quantity > 0 and p.seller_id <> ' + cust_id +' and p.category_id = ' +cat_id+ '';
 	
-	console.log("Query is:"+queryString);
 	mysql.fetchData(function(err,results){
 if(err){
 	json_responses = {"statusCode" : 401};
@@ -126,7 +123,6 @@ function prodDescription(req, res){
 	var json_responses ;
 	var queryString = 'select * from brand where category_id = '+type+'';
 	req.session.cat_id = type;
-	console.log("Query is:"+queryString);
 	mysql.fetchData(function(err,results){
 if(err){
 	json_responses = {"statusCode" : 401};
@@ -138,7 +134,6 @@ else
 	var conditions;
 	var conditionsQuery = 'select * from conditions';
 	
-	console.log("Query is:"+conditionsQuery);
 	mysql.fetchData(function(err,results){
 if(err){
 	json_responses = {"statusCode" : 401};
@@ -159,7 +154,6 @@ else
 			});
 }
 },conditionsQuery,'');
-	console.log("conditions2"+conditions);
 	
 	
 }
@@ -171,9 +165,7 @@ function addProduct(req,res)
 {
 	var json_responses;
 	var cust_id = req.session.user_id;
-	console.log("cust_id:"+cust_id);
 	if(cust_id == undefined){
-		console.log("inside");
 	json_responses = {"statusCode" : 405};
 	res.send(json_responses);
 	}
@@ -190,7 +182,6 @@ function addProduct(req,res)
 	var is_fixed = req.param("is_fixed");
 	var freeShip = req.param("freeShip");
 	var ship_price = '5';
-	console.log(freeShip);
 	if(freeShip)
 		ship_price = '0';
 	
@@ -204,7 +195,6 @@ function addProduct(req,res)
 	var category_id = req.session.cat_id;
 	var post  = {label: label, description : desc, brand: brand, quantity: quantity, price:price,seller_id:cust_id, condition: condition,is_auction:is_auction,is_fixed:is_fixed,start_price:startingPrice,category_id:category_id, ship_price: ship_price };
 	var insertproduct="insert into datahub.product set ? ";
-console.log("Query is:"+insertproduct);
 mysql.insertqueryWithParams(function(err,results){
 if(err){
 throw err;
